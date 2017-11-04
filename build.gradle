@@ -1,0 +1,23 @@
+group 'Cs474hw3'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "junit:junit:4.12"
+    compile group: 'org.eclipse.jdt', name: 'org.eclipse.jdt.core', version: '3.12.3'
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+    compile group: 'org.mod4j.org.eclipse.jface', name: 'text', version: '3.5.0'
+    compile group: 'org.eclipse.text', name: 'org.eclipse.text', version: '3.6.0'
+    compile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.6'
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile "junit:junit:4:12"
+}
