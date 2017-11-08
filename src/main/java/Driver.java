@@ -1,11 +1,16 @@
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import javassist.*;
 
+import javassist.bytecode.ClassFile;
 import org.junit.runner.Request;
 import io.reactivex.*;
 
@@ -26,11 +31,22 @@ public class Driver {
 
             System.out.println(c);
 
-            /*MutationTester testRunner1 = new MutationTester();
+            ClassPool cp = ClassPool.getDefault();
+            cp.insertClassPath("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
+            CtClass cc = cp.get("io.reactivex.BackpressureEnumTest");
 
-            testRunner1.run(cl);*/
+            System.out.println(cc.isFrozen());
 
-            List<Class<?>> classList = new ArrayList<Class<?>>();
+
+            /*BufferedInputStream fin
+                    = new BufferedInputStream(new FileInputStream("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\io\\reactivex\\BackpressureEnumTest.class"));
+            ClassFile cf = new ClassFile(new DataInputStream(fin));*/
+
+            MutationTester testRunner1 = new MutationTester();
+
+            testRunner1.modifyBytes(cc, cc.getClassFile(), cl);
+
+            /*List<Class<?>> classList = new ArrayList<Class<?>>();
             classList.add(cl);
 
             List<Method> testmethods = Utilities.findTests(classList);
@@ -38,17 +54,16 @@ public class Driver {
             for(Method meth : testmethods)
             {
                 System.out.println(meth.getName());
-            }
+            }*/
 
 
-        } catch (ClassNotFoundException e)
+        } catch (Exception e)
         {
-            System.out.println(e.getException() + " : couldn't find the class dumby");
-            System.out.println(e);
-        } catch(Exception e)
+            System.out.println(e + " : couldn't find the class dumby");
+        } /*catch(Exception e)
         {
             System.out.println(e);
-        }
+        }*/
     }
 
     private static Class<?> parseSource(File source)

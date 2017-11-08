@@ -6,7 +6,7 @@ import org.junit.*;
 
 public class Utilities {
 
-    private static List<Method> findAllTestMethods(final Class<?> type)
+    public static List<Method> findAllTestMethods(final Class<?> type)
     {
         List<Method> tests = new ArrayList<Method>();
         Class<?> walker = type;
