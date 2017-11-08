@@ -10,8 +10,8 @@ import javassist.*;
 
 import static javassist.bytecode.Mnemonic.OPCODE;
 
-public class MutationTester extends JUnitCore {
-    @Override
+public class MutationTester {
+
     public Result run(java.lang.Class<?>... classes)
     {
         /*List<Class<?>> classList = new ArrayList<Class<?>>();
@@ -28,10 +28,10 @@ public class MutationTester extends JUnitCore {
 
 
         }
-        return super.run(classes);
+        return null;
     }
 
-    public static boolean modifyBytes(CtClass ct, ClassFile cf, java.lang.Class<?>... classes)
+    public static boolean modifyBytes(CtClass ct, Mutator mutation, java.lang.Class<?>... classes)
     {
         try {
             /*List<Method> tests = Utilities.findAllTestMethods(classes[0]);
@@ -50,8 +50,9 @@ public class MutationTester extends JUnitCore {
                         });
             }*/
 
+           mutation.mutate(ct);
 
-            MethodInfo minfo = cf.getMethod("backpressureOverflowStrategy");    // we assume move is not overloaded.
+            /*MethodInfo minfo = cf.getMethod("backpressureOverflowStrategy");    // we assume move is not overloaded.
             CodeAttribute ca = minfo.getCodeAttribute();
             CodeIterator ci = ca.iterator();
             while (ci.hasNext()) {
@@ -59,10 +60,10 @@ public class MutationTester extends JUnitCore {
                 int op = ci.byteAt(index);
                 System.out.println(OPCODE[op]);
                 String temp = Mnemonic.OPCODE[op];
-            }
+            }*/
 
             return true;
-        } catch(javassist.bytecode.BadBytecode e){
+        } catch(Exception e){
             System.out.println("couldn't find the method : " + e.getMessage());
         }
         return false;

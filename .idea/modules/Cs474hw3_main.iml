@@ -10,13 +10,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.eclipse.text:org.eclipse.text:3.6.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.core.filesystem:1.7.0" level="project" />
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.equinox:registry:3.4.100" level="project" />
-    <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse:text:3.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.equinox:preferences:3.2.300" level="project" />
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.core:contenttype:3.4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.equinox:app:1.2.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.equinox.common:3.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.core:commands:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.0.1" level="project" />
     <orderEntry type="library" name="Gradle: javassist:javassist:3.12.1.GA" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.core.resources:3.12.0" level="project" />
@@ -24,7 +23,7 @@
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse:jface:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.core.expressions:3.6.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.core.commands:3.9.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.core:commands:3.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.equinox.common:3.9.0" level="project" />
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse:swt:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.equinox.registry:3.7.0" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.osgi:3.12.0" level="project" />
@@ -40,8 +39,10 @@
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.text:3.6.100" level="project" />
     <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse.core:runtime:3.5.0" level="project" />
-    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.mod4j.org.eclipse:text:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxjava:2.1.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.platform:org.eclipse.core.filesystem:1.7.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:6.0" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.1" level="project" />
   </component>
 </module>

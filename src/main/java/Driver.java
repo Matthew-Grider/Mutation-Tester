@@ -18,7 +18,8 @@ public class Driver {
 
     public static void main(String[] args)
     {
-        File f = new File("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
+        //File f = new File("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
+        File f = new File("E:\\cs hw stuff\\cs474-hw2\\out\\production\\classes\\");
 
 
         System.out.println(f.getPath());
@@ -26,14 +27,17 @@ public class Driver {
         try {
             URL[] classpath = {f.toURI().toURL()};
             URLClassLoader urlcl = new URLClassLoader(classpath);
-            Class c = urlcl.loadClass("io.reactivex.BackpressureEnumTest");
+            //Class c = urlcl.loadClass("io.reactivex.BackpressureEnumTest");
+            Class c = urlcl.loadClass("io.reactivex.observers.SafeObserver");
             Class<?> cl = c;
 
             System.out.println(c);
 
             ClassPool cp = ClassPool.getDefault();
-            cp.insertClassPath("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
-            CtClass cc = cp.get("io.reactivex.BackpressureEnumTest");
+            //cp.insertClassPath("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
+            //CtClass cc = cp.get("io.reactivex.BackpressureEnumTest");
+            cp.insertClassPath("E:\\cs hw stuff\\cs474-hw2\\out\\production\\classes\\");
+            CtClass cc = cp.get("io.reactivex.observers.SafeObserver");
 
             System.out.println(cc.isFrozen());
 
@@ -44,7 +48,28 @@ public class Driver {
 
             MutationTester testRunner1 = new MutationTester();
 
-            testRunner1.modifyBytes(cc, cc.getClassFile(), cl);
+            Mutator mutation = new Mutator() {
+                @Override
+                public void mutate(CtClass mutation) {
+                    mutation.defrost();
+                    CtConstructor[] constructors = mutation.getConstructors();
+                    try {
+                        for (int i = 0; i < constructors.length; i++) {
+                            constructors[i].setBody("{return;}");
+                        }
+                        mutation.writeFile("C:\\Users\\Matt\\Documents");
+                        System.out.println("Class has been mutated");
+                    } catch (javassist.CannotCompileException e)
+                    {
+                        System.out.println("bruh, this change cant be compiled " + e);
+                    } catch (Exception e)
+                    {
+                        System.out.println("Somethings up : " + e);
+                    }
+                }
+            };
+
+            testRunner1.modifyBytes(cc, mutation, cl);
 
             /*List<Class<?>> classList = new ArrayList<Class<?>>();
             classList.add(cl);
