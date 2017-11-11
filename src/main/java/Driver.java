@@ -22,6 +22,11 @@ import io.reactivex.*;
 
 public class Driver {
 
+    /**
+     * Reads config file and returns a pair containing the directory and classes to be mutated
+     * param: path to config file
+     * return <directory name, list of names of classes to be mutated>
+    * */
     public static Pair<String, List<String>> readConfig(String configPath)
     {
         List<String> classes = new ArrayList<>();
@@ -53,6 +58,11 @@ public class Driver {
         }
     }
 
+    /**
+     * Makes six copies of all class files from the /out directory and then returns a list of thier paths
+     * param: path to /out
+     * return list of new copies paths
+     * */
     public static List<String> copyMutationDocumentation(String dir)
     {
         String oldDir = (dir.split("out"))[0];
@@ -79,37 +89,17 @@ public class Driver {
         return mutatedClassPath;
     }
 
+    /**
+     * Starts the program and manages the thread pool
+     * */
     public static void main(String[] args)
     {
+        //prepares data to be mutated
         Pair<String, List<String>> fileInput = Driver.readConfig("config.txt");
         List<String> mutationList = Driver.copyMutationDocumentation(fileInput.getKey());
-        //File f = new File("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
-        //File f = new File("E:\\cs hw stuff\\cs474-hw2\\out\\production\\classes\\");
 
-
-        //System.out.println(f.getPath());
-
+        //adds names of classes to be edited to a list
         try {
-            /*URL[] classpath = {f.toURI().toURL()};
-            URLClassLoader urlcl = new URLClassLoader(classpath);
-            //Class c = urlcl.loadClass("io.reactivex.BackpressureEnumTest");
-            Class c = urlcl.loadClass("io.reactivex.observers.SafeObserver");
-            Class<?> cl = c;
-
-            System.out.println(c);*/
-
-            /*ClassPool cp = ClassPool.getDefault();
-            //cp.insertClassPath("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\");
-            //CtClass cc = cp.get("io.reactivex.BackpressureEnumTest");
-            cp.insertClassPath("E:\\cs hw stuff\\cs474-hw2\\out\\production\\classes\\");
-            CtClass cc = cp.get("io.reactivex.observers.SafeObserver");
-
-            System.out.println(cc.isFrozen());*/
-
-
-            /*BufferedInputStream fin
-                    = new BufferedInputStream(new FileInputStream("E:\\cs hw stuff\\cs474-hw2\\out\\test\\classes\\io\\reactivex\\BackpressureEnumTest.class"));
-            ClassFile cf = new ClassFile(new DataInputStream(fin));*/
             List<String> ctList = new ArrayList<String>();
             for(String name : fileInput.getValue())
             {
@@ -263,10 +253,12 @@ public class Driver {
 
             System.out.println("add new mutation6 rules");
 
+            //array of all above created mutations
             Mutator[] allMutations = {mutation1, mutation2, mutation3, mutation4, mutation5, mutation6};
 
             List<MutationTester> runnables = new ArrayList<>();
 
+            //creates list of MutationTesters to be executed by threads
             int i = 0;
             for(String name : mutationList) {
                 runnables.add(new MutationTester(("Mutation" + (i + 1)), allMutations[i], name, ctList));
@@ -274,8 +266,10 @@ public class Driver {
                 i++;
             }
 
+            //creates thread pool with 3 threads
             ExecutorService executor = Executors.newFixedThreadPool(3);
 
+            //runs the 6 MutationTest with the 3 threads in the pool
             for(MutationTester running : runnables)
             {
                 Runnable worker = new WorkThread(running);
@@ -285,38 +279,15 @@ public class Driver {
             executor.shutdown();
             while (!executor.isTerminated()) {   }
 
+            //removes the copied directories
             File deleting;
             for(int j = 1; i < 7; i++) {
                 deleting = new File(("mutation" + j));
                 FileUtils.deleteDirectory(deleting);
             }
-
-
-        //testRunner1.modifyBytes();
-
-            /*List<Class<?>> classList = new ArrayList<Class<?>>();
-            classList.add(cl);
-
-            List<Method> testmethods = Utilities.findTests(classList);
-
-            for(Method meth : testmethods)
-            {
-                System.out.println(meth.getName());
-            }*/
-
-
         } catch (Exception e)
         {
             System.out.println(e + " : couldn't find the class dumby");
-        } /*catch(Exception e)
-        {
-            System.out.println(e);
-        }*/
-    }
-
-    private static Class<?> parseSource(File source)
-    {
-        //takes source code and returns the clsses to be used with the mutationTester
-        return null;
+        }
     }
 }

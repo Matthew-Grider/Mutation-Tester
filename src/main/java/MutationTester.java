@@ -27,6 +27,9 @@ public class MutationTester {
     private String dirPath;
     private List<String> classList;;
 
+    /**
+     * Creates new MutationsTester which takes the defined mutation interface and mutates the byte code
+     * */
     public MutationTester(String name, Mutator newMutation, String newDirPath, List<String> newPackageList)
     {
         mutationName = name;
@@ -58,25 +61,9 @@ public class MutationTester {
 
     }
 
-    /*public Result run(java.lang.Class<?>... classes)
-    {
-        List<Class<?>> classList = new ArrayList<Class<?>>();
-        for(int i = 0 ; i < classes.length; i++)
-        {
-            classList.add(classes[i]);
-        }
-        List<Method> test = Utilities.findTests(classList);
-        //CtClass cc = classList.get(0);
-        List<Method> tests = Utilities.findAllTestMethods(classes[0]);
-        for(Method test : tests)
-        {
-            System.out.println(test.getName());
-
-
-        }
-        return null;
-    }*/
-
+    /**
+     * Takes the mutation rules and mutates the given classes bytecode
+     * */
     public void modifyBytes()
     {
         for( CtClass ct : ctList)
@@ -89,6 +76,10 @@ public class MutationTester {
         }
     }
 
+    /**
+     * Runs tests on loaded test classes and then returns the results
+     * return list of Results from tests
+     * */
     public List<Result> runTest()
     {
         String[] temp = dirPath.split("production");
@@ -123,42 +114,4 @@ public class MutationTester {
 
         return results;
     }
-
-    /*public static boolean modifyBytes(CtClass ct, Mutator mutation, java.lang.Class<?>... classes)
-    {
-        try {
-            /*List<Method> tests = Utilities.findAllTestMethods(classes[0]);
-            for (Method test : tests) {
-                System.out.println(test.getName());
-                test
-                CtMethod m = ct.getDeclaredMethod(test.getName());
-                m.instrument(
-                        new ExprEditor() {
-                            public void edit(MethodCall m)
-                                    throws CannotCompileException
-                            {
-                                if (m.getMethodName().equals("if"))
-                                    m.replace("{ $1 = 0; $_ = $proceed($$); }");
-                            }
-                        });
-            }
-
-           mutation.mutate(ct);
-
-            /*MethodInfo minfo = cf.getMethod("backpressureOverflowStrategy");    // we assume move is not overloaded.
-            CodeAttribute ca = minfo.getCodeAttribute();
-            CodeIterator ci = ca.iterator();
-            while (ci.hasNext()) {
-                int index = ci.next();
-                int op = ci.byteAt(index);
-                System.out.println(OPCODE[op]);
-                String temp = Mnemonic.OPCODE[op];
-            }
-
-            return true;
-        } catch(Exception e){
-            System.out.println("couldn't find the method : " + e.getMessage());
-        }
-        return false;
-    }*/
 }
