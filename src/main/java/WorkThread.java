@@ -1,5 +1,10 @@
 import org.junit.runner.Result;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
 public class WorkThread implements Runnable {
     private MutationTester executer;
 
@@ -17,9 +22,17 @@ public class WorkThread implements Runnable {
      * */
     public void run(){
         executer.modifyBytes();
-        for(Result result : executer.runTest())
+        List<Result> resultList = executer.runTest();
+        try {
+            FileWriter fileWriter = new FileWriter(executer.getName() +".txt");
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for(Result res : resultList) {
+                printWriter.println(res.getFailureCount());
+            }
+            printWriter.close();
+        } catch (IOException e)
         {
-            System.out.println(result.wasSuccessful());
+            System.out.println("Couldn't write base test : " + e);
         }
     }
 }

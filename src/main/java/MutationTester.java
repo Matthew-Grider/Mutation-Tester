@@ -17,15 +17,17 @@ import java.util.List;
 import javassist.*;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltStrings.split;
+import static java.lang.System.exit;
 import static javassist.bytecode.Mnemonic.OPCODE;
 
 public class MutationTester {
     private String mutationName;
     private Mutator mutation;
     private ClassPool cp;
-    private List<CtClass> ctList;;
+    private List<CtClass> ctList;
     private String dirPath;
-    private List<String> classList;;
+    private List<String> classList;
+    private String testPath;
 
     /**
      * Creates new MutationsTester which takes the defined mutation interface and mutates the byte code
@@ -37,6 +39,7 @@ public class MutationTester {
         dirPath = newDirPath;
         classList = newPackageList;
         ctList = new ArrayList<>();
+        //testPath = pathTest;
 
         System.out.println("copied all variables");
 
@@ -95,9 +98,27 @@ public class MutationTester {
             URLClassLoader urlcl = new URLClassLoader(classpath);
 
             for(File test : tests) {
-                temp = test.getAbsolutePath().split("classes\\\\");
-                temp = (temp[1].replaceAll("\\\\",".")).split(".class");
-                run.add(urlcl.loadClass(temp[0]));
+                String holder = test.getAbsolutePath();
+                if(holder.contains("\\")) {
+                    temp = test.getAbsolutePath().split("classes\\\\");
+                    temp = (temp[1].replaceAll("\\\\", ".")).split(".class");
+                }
+                else if(holder.contains("/"))
+                {
+                    temp = test.getAbsolutePath().split("classes/");
+                    temp = (temp[1].replaceAll("/", ".")).split(".class");
+                }
+                else
+                {
+                    System.out.println("THE PATHS ARE MEST UP, DOUBLE CHECK THE SLASHES AND MAKE SURE THEY MATCH");
+                    exit(0);
+                }
+
+                try {
+                    run.add(urlcl.loadClass(temp[0]));
+                } catch(IllegalAccessError e) {
+                    System.out.println("Class " + temp[0] + " wasn't loaded " + e);
+                }
             }
         } catch(MalformedURLException e) {
             System.out.println("Incorrect test path : " + e);
@@ -113,5 +134,10 @@ public class MutationTester {
         }
 
         return results;
+    }
+
+    public String getName()
+    {
+        return mutationName;
     }
 }

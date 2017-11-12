@@ -1,4 +1,6 @@
 Dir Path:
 E:\cs hw stuff\cs474-hw2\out\production\classes\
+Test Path:
+E:\cs hw stuff\cs474-hw2\out\test\classes\
 Class:
 io.reactivex.observers.SafeObserver

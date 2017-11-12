@@ -1,3 +1,11 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-rxjava-project-plugin:4.0.0'
+        classpath 'ru.vyarus:gradle-animalsniffer-plugin:1.1.0'
+    }
+}
+
 group 'Cs474hw3'
 version '1.0-SNAPSHOT'
 
@@ -21,4 +29,8 @@ dependencies {
     compile group: 'junit', name: 'junit', version: '4.12'
     compile "junit:junit:4:12"
     compile group: 'org.ow2.asm', name: 'asm', version: '6.0'
+    compile "org.mockito:mockito-core:2.1.0"
+    compile "org.reactivestreams:reactive-streams:1.0.1"
+    compile "org.reactivestreams:reactive-streams-tck:1.0.0"
+    compile "junit:junit:4.12"
 }

@@ -19,6 +19,7 @@ import javassist.bytecode.MethodInfo;
 import org.apache.commons.io.FileUtils;
 import org.junit.runner.Request;
 import io.reactivex.*;
+import org.junit.runner.Result;
 
 public class Driver {
 
@@ -27,10 +28,10 @@ public class Driver {
      * param: path to config file
      * return <directory name, list of names of classes to be mutated>
     * */
-    public static Pair<String, List<String>> readConfig(String configPath)
+    public static Pair<List<String>, List<String>> readConfig(String configPath)
     {
         List<String> classes = new ArrayList<>();
-        String dir = "";
+        List<String> dir = new ArrayList<>();
 
         try {
             FileReader freader = new FileReader(configPath);
@@ -40,10 +41,14 @@ public class Driver {
             while ((s = br.readLine()) != null) {
                 if(counter == 2)
                 {
-                    dir = s;
+                    dir.add(s);
                     System.out.println("|" + dir + "|");
                 }
-                else if(counter > 3)
+                else if(counter == 4)
+                {
+                    dir.add(s);
+                }
+                else if(counter > 5)
                 {
                     classes.add(s);
                     System.out.println("|" + s + "|");
@@ -54,7 +59,7 @@ public class Driver {
         } catch (Exception e) {
             System.out.println("Couldn't read directory : " + e);
         } finally {
-            return new Pair<String, List<String>>(dir, classes);
+            return new Pair<List<String>, List<String>>(dir, classes);
         }
     }
 
@@ -90,13 +95,84 @@ public class Driver {
     }
 
     /**
+     * Read results from the different output files
+     * param: path to file
+     * return list of returned misses
+     * */
+    public static List<Integer> printResults(String fileName)
+    {
+        List<Integer> dir = new ArrayList<>();
+        try {
+            FileReader freader = new FileReader(fileName);
+            BufferedReader br = new BufferedReader(freader);
+            String s;
+            int counter = 1;
+            while ((s = br.readLine()) != null) {
+                dir.add(Integer.parseInt(s));
+            }
+            freader.close();
+        } catch (Exception e) {
+            System.out.println("Couldn't read directory : " + e);
+        }
+        return dir;
+    }
+
+    /**
+     * Processes the results of all tests and prints the consensus
+     * param: list of master and the tests results
+     * */
+    public static void finalPrinter(List<List<Integer>> mutations, List<Integer> master)
+    {
+        int missMatches = 0;
+        int totalTestClass = 0;
+        int numMisses = 0;
+
+        System.out.println("--------------------------------------------");
+        System.out.println("|              Mutation Results            |");
+        System.out.println("|                Listed Below              |");
+        System.out.println("--------------------------------------------");
+        System.out.println("\n");
+
+        int counter = 1;
+        for(List<Integer> list : mutations)
+        {
+            for(int i = 0; i < master.size() && i < list.size(); i++) {
+                if (master.get(i) != list.get(i))
+                {
+                    missMatches++;
+                }
+                totalTestClass++;
+                numMisses += list.get(i);
+            }
+            System.out.println("Mutation " + counter + " was " + ((missMatches / totalTestClass) * 100) + "% the same as the original tests");
+            System.out.println("with " + missMatches + " different test detections from original tests and a total of " + numMisses);
+            counter++;
+        }
+    }
+
+    /**
      * Starts the program and manages the thread pool
      * */
     public static void main(String[] args)
     {
         //prepares data to be mutated
-        Pair<String, List<String>> fileInput = Driver.readConfig("config.txt");
-        List<String> mutationList = Driver.copyMutationDocumentation(fileInput.getKey());
+        Pair<List<String>, List<String>> fileInput = Driver.readConfig("config.txt");
+        String testPath = fileInput.getKey().get(1);
+        //runs basline tests
+        List<Result> resultList = Utilities.runTest(testPath);
+        try {
+            FileWriter fileWriter = new FileWriter("BaseTest.txt");
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for(Result res : resultList) {
+                printWriter.println(res.getFailureCount());
+            }
+            printWriter.close();
+        } catch (IOException e)
+        {
+            System.out.println("Couldn't write base test : " + e);
+        }
+        System.out.println("Test ran");
+        List<String> mutationList = Driver.copyMutationDocumentation(fileInput.getKey().get(0));
 
         //adds names of classes to be edited to a list
         try {
@@ -279,6 +355,16 @@ public class Driver {
             executor.shutdown();
             while (!executor.isTerminated()) {   }
 
+            //creates list from test output files
+            List<Integer> master = printResults("BaseTest.txt");
+            List<List<Integer>> mutations = new ArrayList<>();
+            for(int j = 1; j < 7; j++) {
+                mutations.add(printResults("Mutation" + j + ".txt"));
+            }
+
+            //processes and prints the final outputs
+            finalPrinter(mutations, master);
+
             //removes the copied directories
             File deleting;
             for(int j = 1; i < 7; i++) {
@@ -287,7 +373,7 @@ public class Driver {
             }
         } catch (Exception e)
         {
-            System.out.println(e + " : couldn't find the class dumby");
+            System.out.println(e + " : something went wrong in the Driver");
         }
     }
 }
