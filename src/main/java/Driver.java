@@ -144,7 +144,7 @@ public class Driver {
                 totalTestClass++;
                 numMisses += list.get(i);
             }
-            System.out.println("Mutation " + counter + " was " + ((missMatches / totalTestClass) * 100) + "% the same as the original tests");
+            System.out.println("Mutation " + counter + " was " + ((1 - (missMatches / totalTestClass)) * 100) + "% the same as the original tests");
             System.out.println("with " + missMatches + " different test detections from original tests and a total of " + numMisses);
             counter++;
         }
@@ -367,7 +367,7 @@ public class Driver {
 
             //removes the copied directories
             File deleting;
-            for(int j = 1; i < 7; i++) {
+            for(int j = 1; i < 7; j++) {
                 deleting = new File(("mutation" + j));
                 FileUtils.deleteDirectory(deleting);
             }
