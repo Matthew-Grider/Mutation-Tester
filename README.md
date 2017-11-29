@@ -1,9 +1,9 @@
-# Hw 3 Mutations Tester #
+# Mutations Tester #
 ### by Matthew Grider and Nick Zakharov ###
 
 ## Set Up ##
 This project will work best on the repository of my first hw in this class
-https://bitbucket.org/MattGrider/matthew_grider_hw1
+https://github.com/ReactiveX/RxJava
 
 when you have the RXJava project you will need to compile the tests, easyies way to do this is just run them all one time through
 
