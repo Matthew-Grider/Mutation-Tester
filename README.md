@@ -5,7 +5,7 @@
 This project will work best on the repository of my first hw in this class
 https://github.com/ReactiveX/RxJava
 
-when you have the RXJava project you will need to compile the tests, easyies way to do this is just run them all one time through
+when you have the RXJava project you will need to compile the tests, easiest way to do this is just run them all one time through
 
 Also it is very important that you modify the config file to set the right directory paths to the YOUR LOCAL PATH/out/production/classes and YOUR LOCAL PATH/out/test/classes of the RXJava project on your system.
 If you are on a unix based system dont forget to change your \ to / or visa versa in a windows system.
